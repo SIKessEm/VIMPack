@@ -2,20 +2,44 @@
 #SIKessEm
 #Package Manager for VIM >= 8
 
-author=$1
-vendor=$2
-plugin=$3
 
-while [[ ! -n $author ]]; do
-	read -p "Author name : " author
+action=$1
+author=$2
+vendor=$3
+plugin=$4
+
+case $action in
+	'add' | 'a')
+		pack='opt'
+		;;
+	'use' | 'u')
+		pack='start'
+		;;
+	*)
+		echo "Unknown command $action"
+		exit 1
+		;;
+esac
+
+
+if [[ -n $5 ]]; then
+	echo "Unexpected argument $5"
+	exit 1
+fi
+
+
+while [[ -z $author ]]; do
+	read -p 'Author name : ' author
 done
 
-while [[ ! -n $vendor ]]; do
-	read -p "Vendor name : " vendor
+while [[ -z $vendor ]]; do
+	read -p 'Vendor name : ' vendor
 done
 
-if [[ ! -n $plugin ]]; then
+
+
+if [[ -z $plugin ]]; then
 	plugin=$vendor
 fi
 
-git clone --depth 1 https://${author}/${vendor}.git ~/.vim/pack/vendor/start/${plugin}
+git clone --depth 1 https://github.com/${author}/${vendor}.git ~/.vim/pack/vendor/${pack}/${plugin}
