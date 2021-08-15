@@ -2,6 +2,10 @@
 #SIKessEm
 #package Manager for VIM >= 8
 
+put_error(){
+	echo $1
+	exit 1
+}
 
 case $1 in
 	'add' | 'a')
@@ -21,8 +25,7 @@ case $1 in
 		pack='start'
 		;;
 	*)
-		echo "Unknown command $action"
-		exit 1
+		put_error "Unknown command $action"
 		;;
 esac
 
@@ -59,14 +62,17 @@ get_plugin_name(){
 	done
 }
 
+put_error_argument(){
+	put_error "Unexpected argument $1"
+}
+
 make_pack() {
 	author=$1
 	vendor=$2
 	plugin=$3
 
-	if [[ -n $5 ]]; then
-		echo "Unexpected argument $5"
-		exit 1
+	if [[ -n $4 ]]; then
+		put_error_argument $4
 	fi
 
 	get_author_name
@@ -86,8 +92,7 @@ list_pack() {
 	plugin=$1
 
 	if [[ -n $2 ]]; then
-		echo "Unexpected argument $2"
-		exit 1
+		put_error_argument $2
 	fi
 
 	get_plugin_name
