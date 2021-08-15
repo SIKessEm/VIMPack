@@ -139,12 +139,15 @@ list_pack() {
 
 	ls $pack_dir
 }
-	
-if [ $action = 'make' ]; then
-	make_pack $2 $3 $4 $5
-elif [ $action = 'list' ]; then
-	list_pack $2 $3
-else
-	pack_home
-fi
 
+main(){
+	if [ $action = 'make' ]; then
+		make_pack $2 $3 $4 $5
+	elif [ $action = 'list' ]; then
+		list_pack $2 $3
+	else
+		pack_home
+	fi
+}	
+
+main
