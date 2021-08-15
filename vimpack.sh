@@ -26,6 +26,14 @@ case $1 in
 		;;
 esac
 
+set_pack_url() {
+	pack_url="https://github.com/${author}/${vendor}.git"
+}
+
+set_pack_dir() {
+	 pack_dir="~/.vim/pack/vendor/${pack}/${plugin}"
+}
+
 get_name(){
 	read -p "$1 name : " name
 }
@@ -68,7 +76,10 @@ make_pack() {
 		plugin=$vendor
 	fi
 
-	git clone --depth 1 https://github.com/${author}/${vendor}.git ~/.vim/pack/vendor/${pack}/${plugin}
+	set_pack_url
+	set_pack_dir
+
+	git clone --depth 1 $pack_url $pack_dir
 }
 
 list_pack() {
@@ -80,8 +91,9 @@ list_pack() {
 	fi
 
 	get_plugin_name
+	set_pack_dir
 
-	ls ~/.vim/pack/vendor/${pack}/${plugin}
+	ls $pack_dir
 }
 	
 if [ $action = 'make' ]; then
