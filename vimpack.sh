@@ -10,19 +10,19 @@ put_error(){
 case $1 in
 	'add' | 'a')
 		action='make'
-		pack='opt'
+		folder='opt'
 		;;
 	'use' | 'u')
 		action='make'
-		pack='start'
+		folder='start'
 		;;
 	'added' | 'A')
 		action='list'
-		pack='opt'
+		folder='opt'
 		;;
 	'used' | 'U')
 		action='list'
-		pack='start'
+		folder='start'
 		;;
 	*)
 		put_error "Unknown command $1"
@@ -34,7 +34,7 @@ set_pack_url() {
 }
 
 set_pack_dir() {
-	 pack_dir="~/.vim/pack/vendor/${pack}/${plugin}"
+	 pack_dir="~/.vim/pack/vendor/${folder}/${plugin}"
 }
 
 get_name(){
