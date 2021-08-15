@@ -25,7 +25,7 @@ case $1 in
 		pack='start'
 		;;
 	*)
-		put_error "Unknown command $action"
+		put_error "Unknown command $1"
 		;;
 esac
 
