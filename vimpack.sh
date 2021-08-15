@@ -2,39 +2,63 @@
 #SIKessEm
 #package Manager for VIM >= 8
 
+PROGRAM_NAME='VIMPack'
+
 put_error(){
 	echo $1
 	exit 1
 }
 
-case $1 in
-	'add' | 'a')
-		action='make'
-		folder='opt'
-		;;
-	'use' | 'u')
-		action='make'
-		folder='start'
-		;;
-	'added' | 'A')
-		action='list'
-		folder='opt'
-		;;
-	'used' | 'U')
-		action='list'
-		folder='start'
-		;;
-	*)
-		put_error "Unknown command $1"
-		;;
-esac
+put_menu(){
+	cat <<MENU
+Usage:
+	./vimpack.sh [action] [option]
+
+Actions:
+	"add" or 'a'               To add an optional plugin
+	"use" or 'u'               To use a plugin at startup
+
+	"added" or 'A'             Optional plugins added
+	"used" or 'U'              Starter plugins used
+
+Options:
+	-r                         To remove or replace a plugin normally
+	-R                         To force the removal or replacement of a plugin
+MENU
+}
+
+if [ $# -ge 1 ]; then
+	case $1 in
+		'add' | 'a')
+			action='make'
+			folder='opt'
+			;;
+		'use' | 'u')
+			action='make'
+			folder='start'
+			;;
+		'added' | 'A')
+			action='list'
+			folder='opt'
+			;;
+		'used' | 'U')
+			action='list'
+			folder='start'
+			;;
+		*)
+			put_error "Unknown command $1"
+			;;
+	esac
+else
+	action='home'
+fi
 
 set_pack_url() {
 	pack_url="https://github.com/${author}/${vendor}.git"
 }
 
 set_pack_dir() {
-	 pack_dir="~/.vim/pack/vendor/${folder}/${plugin}"
+	pack_dir="~/.vim/pack/vendor/${folder}/${plugin}"
 }
 
 get_name(){
@@ -66,6 +90,12 @@ put_error_argument(){
 	put_error "Unexpected argument $1"
 }
 
+pack_home(){
+	echo "Welcome to $PROGRAM_NAME !"
+	put_menu
+	exit 0
+}
+
 make_pack() {
 	author=$1
 	vendor=$2
@@ -86,9 +116,10 @@ make_pack() {
 	set_pack_dir
 
 	if [[ -d $pack_dir ]]; then
-		put_error "The $plugin plugin already exists in $folder"
+		put_error "The $plugin plugin already exists in $pack_dir"
 	fi
 
+	#mkdir -p $pack_dir
 	git clone --depth 1 $pack_url $pack_dir
 }
 
@@ -113,5 +144,7 @@ if [ $action = 'make' ]; then
 	make_pack $2 $3 $4 $5
 elif [ $action = 'list' ]; then
 	list_pack $2 $3
+else
+	pack_home
 fi
 
