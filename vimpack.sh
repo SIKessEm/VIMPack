@@ -85,6 +85,10 @@ make_pack() {
 	set_pack_url
 	set_pack_dir
 
+	if [[ -d $pack_dir ]]; then
+		put_error "The $plugin plugin already exists in $folder"
+	fi
+
 	git clone --depth 1 $pack_url $pack_dir
 }
 
@@ -97,6 +101,10 @@ list_pack() {
 
 	get_plugin_name
 	set_pack_dir
+
+	if [[ ! -d $pack_dir ]]; then
+		put_error "The $plugin plugin does not exist in $folder"
+	fi
 
 	ls $pack_dir
 }
