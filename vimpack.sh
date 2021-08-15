@@ -27,32 +27,33 @@ Options:
 MENU
 }
 
-if [ $# -ge 1 ]; then
-	case $1 in
-		'add' | 'a')
-			action='make'
-			folder='opt'
-			;;
-		'use' | 'u')
-			action='make'
-			folder='start'
-			;;
-		'added' | 'A')
-			action='list'
-			folder='opt'
-			;;
-		'used' | 'U')
-			action='list'
-			folder='start'
-			;;
-		*)
-			put_error "Unknown command $1"
-			;;
-	esac
-else
-	action='home'
-fi
-
+boot(){
+	if [ $# -ge 1 ]; then
+		case $1 in
+			'add' | 'a')
+				action='make'
+				folder='opt'
+				;;
+			'use' | 'u')
+				action='make'
+				folder='start'
+				;;
+			'added' | 'A')
+				action='list'
+				folder='opt'
+				;;
+			'used' | 'U')
+				action='list'
+				folder='start'
+				;;
+			*)
+				put_error "Unknown command $1"
+				;;
+		esac
+	else
+		action='home'
+	fi
+}
 set_pack_url() {
 	pack_url="https://github.com/${author}/${vendor}.git"
 }
@@ -150,4 +151,4 @@ main(){
 	fi
 }	
 
-main
+boot $* ; main
